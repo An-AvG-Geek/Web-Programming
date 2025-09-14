@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Felix Jobi - Portfolio</title>
+  <style>
+    /* Global Styles */
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      background: linear-gradient(135deg, #000000, #1c1c1c, #333333, #666666, #ffffff);
+      background-size: 400% 400%;
+      animation: gradientBG 18s ease infinite;
+      color: #f5f5f5;
+      scroll-behavior: smooth;
+    }
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    header {
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    header h1 {
+      font-size: 24px;
+      color: #e0e0e0;
+      text-shadow: 0 0 12px rgba(255,255,255,0.6);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+    }
+    nav ul li {
+      margin-left: 20px;
+    }
+    nav ul li a {
+      color: #f5f5f5;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    nav ul li a:hover {
+      color: #ffffff;
+      text-shadow: 0 0 8px #fff;
+    }
+
+    /* Sections */
+    section {
+      padding: 100px 40px;
+      min-height: 100vh;
+      position: relative;
+    }
+    #home {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex-direction: column;
+    }
+    #home h2 {
+      font-size: 48px;
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(255,255,255,0.4);
+    }
+    #home p {
+      margin-top: 15px;
+      font-size: 22px;
+      color: #e0e0e0;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    /* Typing Effect */
+    .typing {
+      display: inline-block;
+      border-right: 3px solid #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 6s steps(55, end) infinite alternate, blink 0.7s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      from, to { border-color: transparent; }
+      50% { border-color: #fff; }
+    }
+
+    h2.section-title {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 32px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    }
+
+    /* About */
+    #about p {
+      max-width: 800px;
+      margin: auto;
+      text-align: center;
+      font-size: 18px;
+      background: rgba(255,255,255,0.05);
+      padding: 25px;
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    /* Skills */
+    .skills-list {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .skill {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      padding: 15px 30px;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 0 8px rgba(255,255,255,0.2);
+    }
+    .skill:hover {
+      transform: scale(1.1);
+      background: #fff;
+      color: #000;
+      box-shadow: 0 0 20px #fff;
+    }
+
+    /* Projects */
+    .projects-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+    .project-card {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 25px;
+      border-radius: 15px;
+      color: #fff;
+      text-align: center;
+      transition: transform 0.4s, box-shadow 0.4s;
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+    }
+    .project-card h3 {
+      margin-bottom: 15px;
+      font-size: 22px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.6);
+    }
+    .project-card p {
+      font-size: 16px;
+      line-height: 1.4;
+      color: #e0e0e0;
+    }
+    .project-card:hover {
+      transform: translateY(-12px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(255,255,255,0.2), 0 0 20px rgba(255,255,255,0.6);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(5px);
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+    .modal-content {
+      background: #1c1c1c;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 600px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 0 25px rgba(255,255,255,0.3);
+    }
+    .modal-content h2 {
+      margin-bottom: 15px;
+    }
+    .modal-content p {
+      margin-bottom: 20px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .close-btn {
+      background: #fff;
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .close-btn:hover {
+      background: #000;
+      color: #fff;
+      box-shadow: 0 0 10px #fff;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    /* Contact */
+    form {
+      max-width: 500px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    form input, form textarea {
+      margin-bottom: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+    form input::placeholder, form textarea::placeholder {
+      color: #bbb;
+    }
+    form button {
+      background: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      color: #000;
+    }
+    form button:hover {
+      background: #000;
+      color: #fff;
+      box-shadow: 0 0 15px #fff;
+    }
+
+    footer {
+      text-align: center;
+      background: rgba(0,0,0,0.85);
+      color: #e0e0e0;
+      padding: 15px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* Responsive */
+    @media(max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        display: none;
+        background: rgba(0,0,0,0.9);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+      }
+      nav ul.show {
+        display: block;
+      }
+      nav ul li {
+        margin: 15px 0;
+      }
+      .menu-toggle {
+        display: block;
+        cursor: pointer;
+        font-size: 22px;
+        color: white;
+      }
+    }
+    .menu-toggle {
+      display: none;
+    }
+
+    /* Scroll animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 1s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Felix Jobi</h1>
+    <span class="menu-toggle">☰</span>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home" class="fade-in">
+    <h2>Hello, I'm <span style="color:#fff">Felix Jobi</span></h2>
+    <p class="typing">Computer Science Student | Web Developer | Aspiring Data Scientist</p>
+  </section>
+
+  <section id="about" class="fade-in">
+    <h2 class="section-title">About Me</h2>
+    <p>
+      Hello! 👋 I'm <b>Felix Jobi</b>, a BTech Computer Science student with a strong passion for 
+      building innovative and practical software solutions. I enjoy working on projects 
+      that combine creativity and problem-solving, ranging from <b>canteen management systems</b> 
+      to <b>IoT automation</b> and <b>carpooling applications</b>.  
+
+      <br><br>
+      I have hands-on experience with <b>Python, SQL, MongoDB, Java, Flask, and Next.js</b>. 
+      I’ve also completed certifications such as the <b>Google Cloud Career Pathway</b>, 
+      <b>Infosys Springboard – Java for Beginners</b>, and <b>IIT Bombay Spoken Tutorial – C</b>.  
+
+      <br><br>
+      Currently, I’m exploring the world of <b>Data Science</b> while nurturing my 
+      interest in the <b>medical field</b>. My strengths include consistency, 
+      the ability to work under pressure, time management, and being a quick learner.  
+
+      <br><br>
+      Outside academics, I love <b>typing challenges</b> (achieved 100 WPM & 2nd prize in a competition 🎉) 
+      and <b>long-distance driving 🚗</b>.  
+    </p>
+  </section>
+
+  <section id="skills" class="fade-in">
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-list">
+      <div class="skill">HTML</div>
+      <div class="skill">CSS</div>
+      <div class="skill">JavaScript</div>
+      <div class="skill">React</div>
+      <div class="skill">Python</div>
+      <div class="skill">SQL</div>
+      <div class="skill">MongoDB</div>
+      <div class="skill">Flask</div>
+    </div>
+  </section>
+
+  <section id="projects" class="fade-in">
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-container" id="project-list">
+      <!-- Projects will load dynamically with JS -->
+    </div>
+  </section>
+
+  <section id="contact" class="fade-in">
+    <h2 class="section-title">Contact Me</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2025 Felix Jobi - All Rights Reserved</p>
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal" id="projectModal">
+    <div class="modal-content">
+      <h2 id="modalTitle"></h2>
+      <p id="modalDesc"></p>
+      <button class="close-btn" id="closeModal">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Responsive Menu Toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('nav ul');
+    menuToggle.addEventListener('click', () => {
+      nav.classList.toggle('show');
+    });
+
+    // Project Data with Detailed Descriptions
+    const projects = [
+      { 
+        title: "Canteen Management System", 
+        desc: "A full-stack web application designed to manage canteen operations efficiently. Features include online order placement, automated billing, and real-time inventory tracking. It also supports role-based logins for admin, staff, and customers, ensuring smooth workflow and better user experience." 
+      },
+      { 
+        title: "Carpooling & Parcel Sharing App", 
+        desc: "A hybrid Next.js + Flask application that connects riders and travelers on the same route. Users can share car rides or transport parcels cost-effectively. The system includes user authentication, live location-based route matching, seat management, and a review/rating system for safety and trust." 
+      },
+      { 
+        title: "IoT Automation System", 
+        desc: "An IoT project built using Arduino and Flask that allows users to control electrical appliances like lights and fans remotely through a web dashboard. The system integrates with sensors for real-time monitoring, supports scheduling, and demonstrates how IoT can reduce energy consumption in homes and offices." 
+      },
+      { 
+        title: "Emergency Communication App", 
+        desc: "An offline Android application that enables communication during natural disasters like floods or earthquakes when internet and mobile networks fail. The app uses Bluetooth mesh networking for store-and-forward message delivery, creating an ad-hoc communication system to ensure messages reach even in critical situations." 
+      }
+    ];
+
+    // Load Projects
+    const projectList = document.getElementById('project-list');
+    projects.forEach((p, index) => {
+      const card = document.createElement('div');
+      card.classList.add('project-card');
+      card.innerHTML = `<h3>${p.title}</h3><p>${p.desc.substring(0,60)}...</p>`;
+      card.addEventListener('click', () => openModal(index));
+      projectList.appendChild(card);
+    });
+
+    // Modal Logic
+    const modal = document.getElementById('projectModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const closeModalBtn = document.getElementById('closeModal');
+
+    function openModal(index) {
+      modal.style.display = 'flex';
+      modalTitle.textContent = projects[index].title;
+      modalDesc.textContent = projects[index].desc;
+    }
+
+    closeModalBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+
+    // Contact Form (demo alert)
+    const form = document.querySelector('form');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      alert("Thank you for contacting me! I will get back soon.");
+      form.reset();
+    });
+
+    // Scroll animations
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
+    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      });
+    }, appearOptions);
+    faders.forEach(fader => { appearOnScroll.observe(fader); });
+  </script>
+
+</body>
+</html>
